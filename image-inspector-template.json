@@ -1,0 +1,176 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "image-inspector-template",
+        "creationTimestamp": null,
+        "annotations": {
+            "description": "An OpenSCAP image scanner template.\n\nWARNING: Any data stored will be lost upon pod destruction. Only use this template for testing.",
+            "iconClass": "icon-shadowman",
+            "openshift.io/display-name": "An OpenSCAP image scanner (Ephemeral)",
+            "tags": "quickstart"
+        }
+    },
+    "objects": [
+        {
+            "kind": "Route",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}",
+                "creationTimestamp": null,
+                 "labels": {
+                    "app": "${APPLICATION_NAME}"
+                  },
+                "annotations": {
+                    "openshift.io/host.generated": "true"
+                }
+            },
+            "spec": {
+                "to": {
+                    "kind": "Service",
+                    "name": "${APPLICATION_NAME}",
+                    "weight": 100
+                },
+                "port": {
+                    "targetPort": "8080-tcp"
+                },
+                "wildcardPolicy": "None"
+            },
+            "status": {}
+        },
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "${APPLICATION_NAME}"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "8080-tcp",
+                        "protocol": "TCP",
+                        "port": 8080,
+                        "targetPort": 8080
+                    }
+                ],
+                "selector": {
+                    "app": "${APPLICATION_NAME}"
+                },
+                "type": "ClusterIP",
+                "sessionAffinity": "None"
+            },
+            "status": {
+                "loadBalancer": {}
+            }
+        },
+        {
+            "kind": "Pod",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "image-inspector-pod",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "${APPLICATION_NAME}"
+                },
+                "annotations": {
+                    "openshift.io/scc": "privileged"
+                }
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "docker-socket",
+                        "hostPath": {
+                            "path": "/var/run/docker.sock"
+                        }
+                    },
+                    {
+                        "name": "default-token-gekh5",
+                        "secret": {
+                            "secretName": "default-token-gekh5",
+                            "defaultMode": 420
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "image-inspector",
+                        "image": "registry.access.redhat.com/openshift3/image-inspector:latest",
+                        "command": [
+                            "/usr/bin/image-inspector",
+                            "--image=${IMAGE_URL}",
+                            "--path=/tmp/image-content",
+                            "--serve=0.0.0.0:8080",
+                            "--chroot",
+                            "--scan-type=openscap",
+                            "--scan-results-dir=/tmp/image-content",
+                            "--openscap-html-report"
+                        ],
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {},
+                        "volumeMounts": [
+                            {
+                                "name": "docker-socket",
+                                "mountPath": "/var/run/docker.sock"
+                            },
+                            {
+                                "name": "default-token-gekh5",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "terminationMessagePath": "/dev/termination-log",
+                        "imagePullPolicy": "Always",
+                        "securityContext": {
+                            "privileged": true
+                        }
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "nodeSelector": {
+                    "region": "primary"
+                },
+                "serviceAccountName": "default",
+                "serviceAccount": "default",
+                "securityContext": {},
+                "imagePullSecrets": [
+                    {
+                        "name": "default-dockercfg-26c7f"
+                    }
+                ]
+            },
+            "status": {
+            }
+        }
+    ],
+    "parameters": [
+        {
+            "name": "APPLICATION_NAME",
+            "displayName": "Application Name",
+            "description": "The name assigned to all of the frontend objects defined in this template.",
+            "value": "image-inspector",
+            "required": true
+        },
+        {
+            "name": "IMAGE_URL",
+            "displayName": "Image URL to scan with OpenSCAP",
+            "description": "The image to perform OpenSCAP scan over.",
+            "value": "registry.access.redhat.com/rhel7:latest",
+            "required": true
+        }
+    ]
+}
