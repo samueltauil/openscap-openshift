@@ -1,0 +1,15 @@
+node {
+  stage 'build in development'
+  openshiftBuild(namespace: 'dev', buildConfig: 'java-pipeline', showBuildLogs: 'true')
+  
+  stage 'deploy in development'
+  openshiftDeploy(namespace: 'dev', deploymentConfig: 'java-pipeline')
+  openshiftTag(namespace: 'dev', sourceStream: 'java-pipeline',  sourceTag: 'latest', destinationStream: 'java-pipeline', destinationTag: 'promoteToQA', destinationNamespace: 'dev')
+
+  stage 'deploy in QA'
+  openshiftDeploy(namespace: 'qa', deploymentConfig: 'java-pipeline')
+
+  stage 'scale dev and QA'
+  openshiftScale(namespace: 'dev', deploymentConfig: 'java-pipeline',replicaCount: '2')
+  openshiftScale(namespace: 'qa', deploymentConfig: 'java-pipeline',replicaCount: '3')
+}
