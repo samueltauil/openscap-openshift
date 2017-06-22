@@ -2,7 +2,7 @@
 
 In this demo we are using Host path, they are restricted by default in most SCCs since they provide direct access to the host. We need to grant access to an elevated SCC called `privileged`.
 
-1. Using `minishift` or `oc cluster up` login as `cluster:admin`:
+1. Using `minishift` or `oc cluster up` login as `system:admin`:
 ```
 oc login -u system:admin
 ```
