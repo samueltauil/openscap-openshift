@@ -12,16 +12,11 @@ oc login -u system:admin
 oc adm policy add-scc-to-user privileged <user name>
 ```
 
-3. Import the template
-```
-oc create -f image-inspector-template.json
-```
- 
-4. Provide the url for the image to scan (eg. `IMAGE_URL=registry.access.redhat.com/rhel7:latest`)
+3. Provide the url for the image to scan (eg. `IMAGE_URL=registry.access.redhat.com/rhel7:latest`)
 ```
 oc process -f image-inspector-template.json \
     -p APPLICATION_NAME=image-inspector -p IMAGE_URL=registry.access.redhat.com/rhel7:latest \
     | oc create -f -
 ```
-5. Open the result report at `<route url>/api/v1/content/results.html`
+4. Open the result report at `<route url>/api/v1/content/results.html`
 
