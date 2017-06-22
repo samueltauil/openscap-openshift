@@ -5,9 +5,9 @@
         "name": "image-inspector-template",
         "creationTimestamp": null,
         "annotations": {
-            "description": "An OpenSCAP image scanner template.\n\nWARNING: Any data stored will be lost upon pod destruction. Only use this template for testing.",
+            "description": "An OpenSCAP Image Scanner template.\n\nWARNING: Any data stored will be lost upon pod destruction. Only use this template for testing.",
             "iconClass": "icon-shadowman",
-            "openshift.io/display-name": "An OpenSCAP image scanner (Ephemeral)",
+            "openshift.io/display-name": "An OpenSCAP Image Scanner (Ephemeral)",
             "tags": "quickstart"
         }
     },
@@ -90,13 +90,6 @@
                         "hostPath": {
                             "path": "/var/run/docker.sock"
                         }
-                    },
-                    {
-                        "name": "default-token-gekh5",
-                        "secret": {
-                            "secretName": "default-token-gekh5",
-                            "defaultMode": 420
-                        }
                     }
                 ],
                 "containers": [
@@ -124,11 +117,6 @@
                             {
                                 "name": "docker-socket",
                                 "mountPath": "/var/run/docker.sock"
-                            },
-                            {
-                                "name": "default-token-gekh5",
-                                "readOnly": true,
-                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
                             }
                         ],
                         "terminationMessagePath": "/dev/termination-log",
@@ -141,16 +129,10 @@
                 "restartPolicy": "Always",
                 "terminationGracePeriodSeconds": 30,
                 "dnsPolicy": "ClusterFirst",
-                "nodeSelector": {
-                    "region": "primary"
-                },
                 "serviceAccountName": "default",
                 "serviceAccount": "default",
                 "securityContext": {},
                 "imagePullSecrets": [
-                    {
-                        "name": "default-dockercfg-26c7f"
-                    }
                 ]
             },
             "status": {
