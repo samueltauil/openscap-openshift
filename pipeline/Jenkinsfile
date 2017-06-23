@@ -1,5 +1,10 @@
 node {
   stage 'build app'
+  openshiftCreateResource(jsonyaml:  ''' {"apiVersion":"v1","kind":"BuildConfig","metadata":{"annotations":{"openshift.io/generated-by":"OpenShiftWebConsole"},"labels":{"app":"welcome"},"name":"welcome"},"spec":{"output":{"to":{"kind":"ImageStreamTag","name":"welcome:latest"}},"postCommit":{},"resources":{},"runPolicy":"Serial","source":{"git":{"ref":"master","uri":"https://github.com/samueltauil/nodejs-welcome.git"},"type":"Git"},"strategy":{"sourceStrategy":{"from":{"kind":"ImageStreamTag","name":"nodejs:4","namespace":"openshift"}},"type":"Source"},"triggers":[{"generic":{"secret":"5a0bf222b01870cb"},"type":"Generic"},{"github":{"secret":"ca175e2f1c266f00"},"type":"GitHub"},{"imageChange":{},"type":"ImageChange"},{"type":"ConfigChange"}]},"status":{}}  ''', namespace: 'myproject', verbose: 'false' )
+  openshiftBuild(namespace: 'myproject', buildConfig: 'welcome', showBuildLogs: 'true')
+  
   stage 'execute image scan'
+ oc process -f https://raw.githubusercontent.com/samueltauil/openscap-openshift/master/image-inspector-template.json -p APPLICATION_NAME=image-inspector -p IMAGE_URL=welcome:latest | oc create -f - 
   stage 'deploy app'
+
 }
