@@ -4,7 +4,6 @@ node {
   openshiftBuild(namespace: 'myproject', buildConfig: 'welcome', showBuildLogs: 'true')
   
   stage 'execute image scan'
- oc process -f https://raw.githubusercontent.com/samueltauil/openscap-openshift/master/image-inspector-template.json -p APPLICATION_NAME=image-inspector -p IMAGE_URL=welcome:latest | oc create -f - 
   stage 'deploy app'
 
 }
