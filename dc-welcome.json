@@ -5,16 +5,10 @@
         "annotations": {
             "openshift.io/generated-by": "OpenShiftWebConsole"
         },
-        "creationTimestamp": "2017-06-22T17:32:55Z",
-        "generation": 2,
         "labels": {
             "app": "welcome"
         },
-        "name": "welcome",
-        "namespace": "myproject",
-        "resourceVersion": "1463",
-        "selfLink": "/oapi/v1/namespaces/myproject/deploymentconfigs/welcome",
-        "uid": "d3765936-5770-11e7-984c-329bde81ebcc"
+        "name": "welcome"
     },
     "spec": {
         "replicas": 1,
@@ -44,7 +38,7 @@
             "spec": {
                 "containers": [
                     {
-                        "image": "172.30.1.1:5000/myproject/welcome@sha256:669460335b54b41f9e719f6eed23add7b78ca502d7bdf0ecabb776337439e2c4",
+                        "image": "welcome:latest",
                         "imagePullPolicy": "Always",
                         "name": "welcome",
                         "ports": [
@@ -76,7 +70,7 @@
                         "name": "welcome:latest",
                         "namespace": "myproject"
                     },
-                    "lastTriggeredImage": "172.30.1.1:5000/myproject/welcome@sha256:669460335b54b41f9e719f6eed23add7b78ca502d7bdf0ecabb776337439e2c4"
+                    "lastTriggeredImage": "null"
                 },
                 "type": "ImageChange"
             },
@@ -86,44 +80,5 @@
         ]
     },
     "status": {
-        "availableReplicas": 1,
-        "conditions": [
-            {
-                "lastTransitionTime": "2017-06-22T17:34:22Z",
-                "lastUpdateTime": "2017-06-22T17:34:22Z",
-                "message": "Deployment config has minimum availability.",
-                "status": "True",
-                "type": "Available"
-            },
-            {
-                "lastTransitionTime": "2017-06-22T17:34:23Z",
-                "lastUpdateTime": "2017-06-22T17:34:23Z",
-                "message": "replication controller \"welcome-1\" successfully rolled out",
-                "reason": "NewReplicationControllerAvailable",
-                "status": "True",
-                "type": "Progressing"
-            }
-        ],
-        "details": {
-            "causes": [
-                {
-                    "imageTrigger": {
-                        "from": {
-                            "kind": "ImageStreamTag",
-                            "name": "welcome:latest",
-                            "namespace": "myproject"
-                        }
-                    },
-                    "type": "ImageChange"
-                }
-            ],
-            "message": "image change"
-        },
-        "latestVersion": 1,
-        "observedGeneration": 2,
-        "readyReplicas": 1,
-        "replicas": 1,
-        "unavailableReplicas": 0,
-        "updatedReplicas": 1
     }
 }
