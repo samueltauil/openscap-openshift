@@ -2,13 +2,13 @@
     "apiVersion": "v1",
     "kind": "BuildConfig",
     "metadata": {
+        "name": "welcome",
         "annotations": {
             "openshift.io/generated-by": "OpenShiftWebConsole"
         },
         "labels": {
             "app": "welcome"
-        },
-        "name": "welcome"
+        }
     },
     "spec": {
         "output": {
