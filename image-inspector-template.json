@@ -90,6 +90,10 @@
                         "hostPath": {
                             "path": "/var/run/docker.sock"
                         }
+                    },
+                    {
+                        "name": "docker-registry",
+                        "secret": {"secretName":"docker-registry"}
                     }
                 ],
                 "containers": [
@@ -104,7 +108,8 @@
                             "--chroot",
                             "--scan-type=openscap",
                             "--scan-results-dir=/tmp/image-content",
-                            "--openscap-html-report"
+                            "--openscap-html-report",
+                            "--dockercfg=/tmp/registry/.dockercfg"
                         ],
                         "ports": [
                             {
@@ -117,6 +122,10 @@
                             {
                                 "name": "docker-socket",
                                 "mountPath": "/var/run/docker.sock"
+                            },
+                            {
+                                "name": "docker-registry",
+                                "mountPath": "/tmp/registry"
                             }
                         ],
                         "terminationMessagePath": "/dev/termination-log",
