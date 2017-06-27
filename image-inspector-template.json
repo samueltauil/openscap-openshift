@@ -90,7 +90,14 @@
                         "hostPath": {
                             "path": "/var/run/docker.sock"
                         }
-                    }
+                    },
+		{
+                "name": "docker-registry",
+                "secret": {
+                    "defaultMode": 420,
+                    "secretName": "docker-registry"
+                }
+               }
                 ],
                 "containers": [
                     {
@@ -117,7 +124,12 @@
                             {
                                 "name": "docker-socket",
                                 "mountPath": "/var/run/docker.sock"
-                            }
+                            },
+		            {
+                        	"mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                        	"name": "docker-registry",
+                        	"readOnly": true
+                    	    }
                         ],
                         "terminationMessagePath": "/dev/termination-log",
                         "imagePullPolicy": "Always",
@@ -133,6 +145,9 @@
                 "serviceAccount": "default",
                 "securityContext": {},
                 "imagePullSecrets": [
+			{
+			"name": "docker-registry"
+			}
                 ]
             },
             "status": {

@@ -11,12 +11,20 @@ oc login -u system:admin
 ```
 oc adm policy add-scc-to-user privileged <user name>
 ```
+3. Create the secret (named `docker-registry`) to provide the credentials so the image inspector pod can pull and scan the image:
+```
+oc secrets new-dockercfg docker-registry \
+    --docker-server=<registry-server-url> --docker-username=<username> \
+    --docker-password=<password-or-token> --docker-email=<email-address>
+```
 
-3. Provide the url for the image to scan (eg. `IMAGE_URL=registry.access.redhat.com/rhel7:latest`)
+4. Provide the url for the image to scan (eg. `IMAGE_URL=registry.access.redhat.com/rhel7:latest`)
 ```
 oc process -f image-inspector-template.json \
     -p APPLICATION_NAME=image-inspector -p IMAGE_URL=registry.access.redhat.com/rhel7:latest \
     | oc create -f -
 ```
-4. Open the result report at `<route url>/api/v1/content/results.html`
+or execute the script `create-objects.sh` to create everything you need.
+
+5. Open the result report at `<route url>/api/v1/content/results.html`
 
