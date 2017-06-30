@@ -2,7 +2,9 @@ node {
   stage 'build app'
   openshiftBuild(namespace: 'myproject', buildConfig: 'welcome', showBuildLogs: 'true')
   stage 'execute image scan'
-  
+    openshift.withCluster() {
+    echo "Hello from mycluster's default project: ${openshift.project()}"
+    }  
   stage 'deploy app'
   openshiftDeploy(namespace: 'myproject', deploymentConfig: 'welcome')
 }
