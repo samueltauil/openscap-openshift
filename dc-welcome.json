@@ -68,7 +68,6 @@
                     "from": {
                         "kind": "ImageStreamTag",
                         "name": "welcome:latest",
-                        "namespace": "myproject"
                     },
                     "lastTriggeredImage": "null"
                 },
