@@ -3,7 +3,10 @@ node {
   openshiftBuild(namespace: 'demo', buildConfig: 'welcome', showBuildLogs: 'true')
   stage 'execute image scan'
     openshift.withCluster() {
-    echo "Hello from mycluster's default project: ${openshift.project()}"
+	def models = openshift.process( "demo//image-inspector-template", "-p", "APPLICATION_NAME=image-inspector", "-p", "IMAGE_URL=docker-registry-default.apps.ocp.tauil.org/demo/welcome:latest")
+        echo "Creating this template will instantiate ${models.size()} objects"
+        def created = openshift.create( models )
+        echo "The template instantiated: ${models.names()}"
     }  
   stage 'deploy app'
   openshiftDeploy(namespace: 'demo', deploymentConfig: 'welcome')
