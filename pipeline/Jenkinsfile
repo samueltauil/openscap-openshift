@@ -6,7 +6,7 @@ node {
 	def models = openshift.process( "demo//image-inspector-template", "-p", "APPLICATION_NAME=image-inspector", "-p", "IMAGE_URL=docker-registry-default.apps.ocp.tauil.org/demo/welcome:latest")
         echo "Creating this template will instantiate ${models.size()} objects"
         def created = openshift.create( models )
-        echo "The template instantiated: ${models.names()}"
+        echo "Application created"
     }  
   stage 'deploy app'
   openshiftDeploy(namespace: 'demo', deploymentConfig: 'welcome')
