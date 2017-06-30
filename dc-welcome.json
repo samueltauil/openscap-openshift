@@ -67,7 +67,7 @@
                     ],
                     "from": {
                         "kind": "ImageStreamTag",
-                        "name": "welcome:latest",
+                        "name": "welcome:latest"
                     },
                     "lastTriggeredImage": "null"
                 },
