@@ -15,7 +15,7 @@ oc adm policy add-scc-to-user privileged <user name>
 ```
 oc secrets new-dockercfg docker-registry \
     --docker-server=<registry-server-url> --docker-username=<username> \
-    --docker-password=<password-or-token> --docker-email=<email-address>
+    --docker-password=$(oc whoami -t) --docker-email=<email-address>
 ```
 
 4. Provide the url for the image to scan (eg. `IMAGE_URL=registry.access.redhat.com/rhel7:latest`)
