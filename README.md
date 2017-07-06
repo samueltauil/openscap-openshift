@@ -11,6 +11,7 @@ oc login -u system:admin
 ```
 oc adm policy add-scc-to-user privileged <user name>
 ```
+
 3. Create the secret (named `docker-registry`) to provide the credentials so the image inspector pod can pull and scan the image:
 ```
 oc secrets new-dockercfg docker-registry \
@@ -24,10 +25,15 @@ oc process -f image-inspector-template.json \
     -p APPLICATION_NAME=image-inspector -p IMAGE_URL=registry.access.redhat.com/rhel7:latest \
     | oc create -f -
 ```
+
 or execute the script `create-objects.sh` to create everything you need.
+
 5. In the case you executed the script, you are going to have Jenkins provisioned in the project, so log into Jenkins and go to Manage Plugins and install the Openshift Client Plugin.
+
 6. Now you can go to Builds -> Pipeline, and start the pipeline.
+
 7. Open the result report at `<route url>/api/v1/content/results.html`
+
 8. The app provided by the inspector provides WebDAV sharing to the content of the image scanned, so on Mac you can execute:
 ```
 cadaver http://<route url>/api/v1/content/
