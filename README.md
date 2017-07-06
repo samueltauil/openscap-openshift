@@ -28,4 +28,7 @@ or execute the script `create-objects.sh` to create everything you need.
 5. In the case you executed the script, you are going to have Jenkins provisioned in the project, so log into Jenkins and go to Manage Plugins and install the Openshift Client Plugin.
 6. Now you can go to Builds -> Pipeline, and start the pipeline.
 7. Open the result report at `<route url>/api/v1/content/results.html`
-
+8. The app provided by the inspector provides WebDAV sharing to the content of the image scanned, so on Mac you can execute:
+```
+cadaver http://<route url>/api/v1/content/
+```
