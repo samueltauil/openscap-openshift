@@ -1,6 +1,6 @@
 # openscap-openshift
 
-In this demo we are using Host path, they are restricted by default in most SCCs since they provide direct access to the host. We need to grant access to an elevated SCC called `privileged`.
+In this demo we are using Host path, they are restricted by default in most SCCs since they provide direct access to the host. We need to grant access to an elevated SCC called `privileged`. Also use project `demo`.
 
 1. Using `minishift` or `oc cluster up` login as `system:admin`:
 ```
@@ -9,7 +9,7 @@ oc login -u system:admin
   
 2. Give grant access to `privileged` SCC:
 ```
-oc adm policy add-scc-to-user privileged <user name>
+oc adm policy add-scc-to-user privileged -z default -n demo
 ```
 
 3. Create the secret (named `docker-registry`) to provide the credentials so the image inspector pod can pull and scan the image:
