@@ -7,9 +7,12 @@ node {
         echo "Creating this template will instantiate ${models.size()} objects"
         def created = openshift.create( models )
         echo "Application created"
-    }  
+    }
   stage 'review report'
   input "Do you want to deploy the application ?"
+
+  stage 'create deployment'
+  openshift.create('deploymentconfig','welcome')
   
   stage 'deploy app'
   openshiftDeploy(namespace: 'demo', deploymentConfig: 'welcome')
