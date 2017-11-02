@@ -12,8 +12,93 @@ node {
   input "Do you want to deploy the application ?"
 
   stage 'create deployment'
-  openshift.create('deploymentconfig','welcome')
-  
+  openshift.withCluster() {
+  def deployment = [
+                        "apiVersion": "v1",
+                        "kind": "DeploymentConfig",
+                        "metadata": [
+                            "annotations": [
+                                "openshift.io/generated-by": "OpenShiftWebConsole"
+                            ],
+                            "labels": [
+                                "app": "welcome"
+                            ],
+                            "name": "welcome"
+                        ],
+                        "spec": [
+                            "replicas": 1,
+                            "selector": [
+                                "deploymentconfig": "welcome"
+                            ],
+                            "strategy": [
+                                "activeDeadlineSeconds": 21600,
+                                "resources": [],
+                                "rollingParams": [
+                                    "intervalSeconds": 1,
+                                    "maxSurge": "25%",
+                                    "maxUnavailable": "25%",
+                                    "timeoutSeconds": 600,
+                                    "updatePeriodSeconds": 1
+                                ],
+                                "type": "Rolling"
+                            ],
+                            "template": [
+                                "metadata": [
+                                    "creationTimestamp": null,
+                                    "labels": [
+                                        "app": "welcome",
+                                        "deploymentconfig": "welcome"
+                                    ]
+                                ],
+                                "spec": [
+                                    "containers": [
+                                        [
+                                            "image": "welcome:latest",
+                                            "imagePullPolicy": "Always",
+                                            "name": "welcome",
+                                            "ports": [
+                                                [
+                                                    "containerPort": 8080,
+                                                    "protocol": "TCP"
+                                                ]
+                                            ],
+                                            "resources": [],
+                                            "terminationMessagePath": "/dev/termination-log"
+                                        ]
+                                    ],
+                                    "dnsPolicy": "ClusterFirst",
+                                    "restartPolicy": "Always",
+                                    "securityContext": {},
+                                    "terminationGracePeriodSeconds": 30
+                                ]
+                            ],
+                            "test": false,
+                            "triggers": [
+                                [
+                                    "imageChangeParams": [
+                                        "automatic": true,
+                                        "containerNames": [
+                                            "welcome"
+                                        ],
+                                        "from": [
+                                            "kind": "ImageStreamTag",
+                                            "name": "welcome:latest"
+                                        ],
+                                        "lastTriggeredImage": "null"
+                                    ],
+                                    "type": "ImageChange"
+                                ],
+                                [
+                                    "type": "ConfigChange"
+                                ]
+                            ]
+                        ],
+                        "status": [
+                        ]
+                    ]
+openshift.create(deployment)
+}
+
   stage 'deploy app'
   openshiftDeploy(namespace: 'demo', deploymentConfig: 'welcome')
 }
