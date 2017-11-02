@@ -13,7 +13,7 @@ node {
 
   stage 'create deployment'
   openshift.withCluster() {
-  def deployment = [{
+  def deployment = "{
       "apiVersion": "v1",
       "kind": "DeploymentConfig",
       "metadata": {
@@ -95,7 +95,7 @@ node {
       },
       "status": {
       }
-  }]
+  }"
 def objs = openshift.create( deployment,'--save-config', '--validate' )
 objs.describe()
 
