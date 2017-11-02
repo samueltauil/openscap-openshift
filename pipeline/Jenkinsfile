@@ -8,6 +8,9 @@ node {
         def created = openshift.create( models )
         echo "Application created"
     }  
+  stage 'review report'
+  input "Do you want to deploy the application ?"
+  
   stage 'deploy app'
   openshiftDeploy(namespace: 'demo', deploymentConfig: 'welcome')
 }
