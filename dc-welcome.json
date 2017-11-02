@@ -58,6 +58,7 @@
             }
         },
         "test": false,
+        "paused": true,
         "triggers": [
             {
                 "imageChangeParams": {
