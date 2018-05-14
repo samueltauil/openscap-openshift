@@ -14,4 +14,4 @@ oc create -f route-welcome.json
 oc create secret docker-registry docker-registry --docker-server=docker-registry-default.apps.rg.osecloud.com --docker-username=developer --docker-password=$(oc whoami -t) --docker-email=rgupta@redhat.com
 oc create -f pipeline/pipeline-inspector.yml
 oc create -f image-inspector-template.json
-oc set env dc/jenkins INSTALL_PLUGINS=openshift-client:1.0.1
+oc set env dc/jenkins INSTALL_PLUGINS=openshift-client:1.0.1,openshift-sync:1.0.18
