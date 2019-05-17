@@ -3,7 +3,7 @@ node {
   openshiftBuild(namespace: 'demo', buildConfig: 'welcome', showBuildLogs: 'true')
   stage 'execute image scan'
     openshift.withCluster() {
-	def models = openshift.process( "demo//image-inspector-template", "-p", "APPLICATION_NAME=image-inspector", "-p", "IMAGE_URL=docker-registry-default.apps.rg.osecloud.com/demo/welcome:latest")
+	def models = openshift.process( "demo//image-inspector-template", "-p", "APPLICATION_NAME=image-inspector", "-p", "IMAGE_URL=docker-registry-default.apps.ocpdtcc-d2a8.openshiftworkshop.com/demo/welcome:latest")
         echo "Creating this template will instantiate ${models.size()} objects"
         def created = openshift.create( models )
         echo "Application created"
